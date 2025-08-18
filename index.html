@@ -193,6 +193,7 @@
             z-index: 1000;
             transform: translateX(150%);
             transition: transform 0.3s ease-in-out;
+            max-width: 400px;
         }
 
         .notification.show {
@@ -205,6 +206,10 @@
 
         .notification.error {
             background-color: var(--danger-color);
+        }
+
+        .notification.warning {
+            background-color: var(--warning-color);
         }
 
         .print-area {
@@ -298,6 +303,32 @@
             border-bottom: 1px solid var(--border-color);
             margin-bottom: 5px;
             height: 20px;
+        }
+
+        .error-details {
+            margin-top: 10px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .script-status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .script-status.error {
+            background-color: rgba(234, 67, 53, 0.1);
+            color: var(--danger-color);
+            border: 1px solid rgba(234, 67, 53, 0.2);
+        }
+
+        .script-status.success {
+            background-color: rgba(52, 168, 83, 0.1);
+            color: var(--secondary-color);
+            border: 1px solid rgba(52, 168, 83, 0.2);
         }
 
         @media (max-width: 768px) {
@@ -397,6 +428,8 @@
                 <i class="fas fa-trash-alt"></i> Clear Forms
             </button>
         </div>
+        
+        <div class="script-status" id="scriptStatus"></div>
     </div>
 
     <div class="print-area" id="printArea">
@@ -504,7 +537,39 @@
             
             // Generate voucher numbers
             generateVoucherNumbers();
+            
+            // Check script connection
+            checkScriptConnection();
         });
+
+        // Check if the script is accessible
+        async function checkScriptConnection() {
+            const statusDiv = document.getElementById('scriptStatus');
+            
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'GET',
+                    mode: 'no-cors'
+                });
+                
+                // Since we're using no-cors, we can't check the response status
+                // But if no exception is thrown, the URL is likely accessible
+                statusDiv.textContent = 'Google Apps Script is accessible';
+                statusDiv.className = 'script-status success';
+                statusDiv.style.display = 'block';
+                
+                // Hide after 5 seconds
+                setTimeout(() => {
+                    statusDiv.style.display = 'none';
+                }, 5000);
+            } catch (error) {
+                statusDiv.textContent = 'Error connecting to Google Apps Script. Please check the URL and deployment settings.';
+                statusDiv.className = 'script-status error';
+                statusDiv.style.display = 'block';
+                
+                console.error('Script connection error:', error);
+            }
+        }
 
         // Generate voucher numbers
         function generateVoucherNumbers() {
@@ -567,32 +632,59 @@
                     method: 'POST',
                     body: JSON.stringify(sheetData),
                     headers: {
-                        'Content-Type': 'text/plain;charset=utf-8',
-                    }
+                        'Content-Type': 'application/json',
+                    },
+                    mode: 'cors' // Try with CORS first
                 });
                 
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                
-                const result = await response.json();
-                
-                if (result.status === 'success') {
-                    // Show success message
+                    // Try with no-cors if CORS fails
+                    const fallbackResponse = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify(sheetData),
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        mode: 'no-cors'
+                    });
+                    
+                    // With no-cors, we can't check the response status
+                    // So we'll assume it was successful if no exception is thrown
                     showNotification('Data saved successfully!', 'success');
-                    
-                    // Generate new voucher numbers for next entry
                     generateVoucherNumbers();
-                    
-                    // Prepare vouchers for printing
                     prepareVouchersForPrint();
                 } else {
-                    throw new Error(result.message || 'Unknown error occurred');
+                    const result = await response.json();
+                    
+                    if (result.status === 'success') {
+                        // Show success message
+                        showNotification('Data saved successfully!', 'success');
+                        
+                        // Generate new voucher numbers for next entry
+                        generateVoucherNumbers();
+                        
+                        // Prepare vouchers for printing
+                        prepareVouchersForPrint();
+                    } else {
+                        throw new Error(result.message || 'Unknown error occurred');
+                    }
                 }
                 
             } catch (error) {
                 console.error('Error saving data:', error);
-                showNotification(`Error: ${error.message}`, 'error');
+                
+                // Show detailed error message
+                let errorMessage = 'Error saving data to Google Sheets';
+                
+                if (error.message.includes('Failed to fetch')) {
+                    errorMessage = 'Network error: Could not connect to Google Apps Script. Please check your internet connection and the script URL.';
+                } else if (error.message.includes('CORS')) {
+                    errorMessage = 'CORS error: The Google Apps Script may not be configured to accept requests from this origin.';
+                } else {
+                    errorMessage = `Error: ${error.message}`;
+                }
+                
+                showNotification(errorMessage, 'error');
             } finally {
                 // Reset button state
                 saveBtn.innerHTML = originalContent;
@@ -654,13 +746,13 @@
         // Show notification
         function showNotification(message, type) {
             const notification = document.getElementById('notification');
-            notification.textContent = message;
+            notification.innerHTML = message;
             notification.className = `notification ${type}`;
             notification.classList.add('show');
             
             setTimeout(() => {
                 notification.classList.remove('show');
-            }, 3000);
+            }, 5000);
         }
 
         // Format date

@@ -1,775 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cash Book System</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #4285f4;
-            --secondary-color: #34a853;
-            --danger-color: #ea4335;
-            --warning-color: #fbbc05;
-            --light-bg: #f8f9fa;
-            --border-color: #dee2e6;
-            --text-color: #333;
-            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--light-bg);
-            color: var(--text-color);
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            background-color: white;
-            box-shadow: var(--shadow);
-            padding: 15px 0;
-            margin-bottom: 30px;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        h1 {
-            color: var(--primary-color);
-            font-size: 28px;
-        }
-
-        .main-content {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .voucher-section {
-            flex: 1;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            padding: 20px;
-        }
-
-        .section-title {
-            font-size: 20px;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--border-color);
-        }
-
-        .payment-section .section-title {
-            color: var(--danger-color);
-        }
-
-        .receipt-section .section-title {
-            color: var(--secondary-color);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
-        }
-
-        .amount-input {
-            display: flex;
-            gap: 10px;
-        }
-
-        .amount-input .form-group {
-            flex: 1;
-        }
-
-        .action-buttons {
-            display: flex;
-            justify-content: center;
-            margin-top: 30px;
-            gap: 20px;
-        }
-
-        .btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #3367d6;
-        }
-
-        .btn-success {
-            background-color: var(--secondary-color);
-            color: white;
-        }
-
-        .btn-success:hover {
-            background-color: #2d9249;
-        }
-
-        .btn-danger {
-            background-color: var(--danger-color);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background-color: #d33b2c;
-        }
-
-        .spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: 4px;
-            color: white;
-            font-weight: 500;
-            box-shadow: var(--shadow);
-            z-index: 1000;
-            transform: translateX(150%);
-            transition: transform 0.3s ease-in-out;
-            max-width: 400px;
-        }
-
-        .notification.show {
-            transform: translateX(0);
-        }
-
-        .notification.success {
-            background-color: var(--secondary-color);
-        }
-
-        .notification.error {
-            background-color: var(--danger-color);
-        }
-
-        .notification.warning {
-            background-color: var(--warning-color);
-        }
-
-        .print-area {
-            display: none;
-        }
-
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            
-            .print-area, .print-area * {
-                visibility: visible;
-            }
-            
-            .print-area {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                display: block;
-            }
-            
-            .voucher {
-                page-break-inside: avoid;
-                margin-bottom: 20px;
-            }
-        }
-
-        .voucher {
-            border: 1px solid var(--border-color);
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-        }
-
-        .voucher-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .voucher-title {
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .voucher-details {
-            margin-bottom: 15px;
-        }
-
-        .voucher-row {
-            display: flex;
-            margin-bottom: 8px;
-        }
-
-        .voucher-label {
-            width: 120px;
-            font-weight: 500;
-        }
-
-        .voucher-value {
-            flex: 1;
-        }
-
-        .voucher-amount {
-            text-align: right;
-            font-weight: 700;
-            font-size: 18px;
-            margin-top: 15px;
-            padding-top: 10px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .voucher-footer {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            padding-top: 10px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .signature {
-            width: 150px;
-            text-align: center;
-        }
-
-        .signature-line {
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 5px;
-            height: 20px;
-        }
-
-        .error-details {
-            margin-top: 10px;
-            font-size: 14px;
-            opacity: 0.9;
-        }
-
-        .script-status {
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 4px;
-            font-size: 14px;
-            display: none;
-        }
-
-        .script-status.error {
-            background-color: rgba(234, 67, 53, 0.1);
-            color: var(--danger-color);
-            border: 1px solid rgba(234, 67, 53, 0.2);
-        }
-
-        .script-status.success {
-            background-color: rgba(52, 168, 83, 0.1);
-            color: var(--secondary-color);
-            border: 1px solid rgba(52, 168, 83, 0.2);
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                flex-direction: column;
-            }
-            
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Cash Book</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f8f9fa; }
+    h2 { text-align: center; color: #333; }
+    .container { display: flex; justify-content: space-between; gap: 20px; }
+    .section { width: 45%; padding: 15px; background: #fff; border: 1px solid #ccc; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    label { display: block; margin-top: 8px; font-weight: bold; color: #444; }
+    input, textarea { width: 100%; padding: 6px; margin-top: 4px; border: 1px solid #bbb; border-radius: 5px; }
+    button { margin-top: 12px; padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #45a049; }
+    .voucher { margin: 20px auto; width: 60%; background: #fff; border: 2px solid #333; border-radius: 8px; padding: 20px; text-align: left; font-size: 15px; line-height: 1.6; }
+    .voucher h3 { text-align: center; margin-bottom: 15px; color: #222; }
+    .voucher p { margin: 5px 0; }
+    .print-btn { display: block; margin: 15px auto 0; background: #007bff; }
+    .print-btn:hover { background: #0069d9; }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <h1><i class="fas fa-book-open"></i> Cash Book System</h1>
-        </div>
-    </header>
-
-    <div class="container">
-        <div class="main-content">
-            <div class="voucher-section payment-section">
-                <h2 class="section-title"><i class="fas fa-money-bill-wave"></i> Payment Voucher</h2>
-                <form id="paymentForm">
-                    <div class="form-group">
-                        <label for="paymentDate">Date</label>
-                        <input type="date" id="paymentDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="paymentNo">Payment No.</label>
-                        <input type="text" id="paymentNo" placeholder="Enter payment number" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="paymentDescription">Description</label>
-                        <textarea id="paymentDescription" rows="3" placeholder="Enter payment description" required></textarea>
-                    </div>
-                    <div class="amount-input">
-                        <div class="form-group">
-                            <label for="paymentBank">Bank Amount</label>
-                            <input type="number" id="paymentBank" step="0.01" placeholder="0.00">
-                        </div>
-                        <div class="form-group">
-                            <label for="paymentCash">Cash Amount</label>
-                            <input type="number" id="paymentCash" step="0.01" placeholder="0.00">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="paymentRemarks">Remarks</label>
-                        <textarea id="paymentRemarks" rows="2" placeholder="Additional remarks"></textarea>
-                    </div>
-                </form>
-            </div>
-
-            <div class="voucher-section receipt-section">
-                <h2 class="section-title"><i class="fas fa-receipt"></i> Receipt Voucher</h2>
-                <form id="receiptForm">
-                    <div class="form-group">
-                        <label for="receiptDate">Date</label>
-                        <input type="date" id="receiptDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="receiptNo">Receipt No.</label>
-                        <input type="text" id="receiptNo" placeholder="Enter receipt number" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="receiptDescription">Description</label>
-                        <textarea id="receiptDescription" rows="3" placeholder="Enter receipt description" required></textarea>
-                    </div>
-                    <div class="amount-input">
-                        <div class="form-group">
-                            <label for="receiptBank">Bank Amount</label>
-                            <input type="number" id="receiptBank" step="0.01" placeholder="0.00">
-                        </div>
-                        <div class="form-group">
-                            <label for="receiptCash">Cash Amount</label>
-                            <input type="number" id="receiptCash" step="0.01" placeholder="0.00">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="receiptRemarks">Remarks</label>
-                        <textarea id="receiptRemarks" rows="2" placeholder="Additional remarks"></textarea>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <div class="action-buttons">
-            <button class="btn btn-primary" id="saveBtn" onclick="saveData()">
-                <i class="fas fa-save"></i> Save Data
-            </button>
-            <button class="btn btn-success" onclick="printVouchers()">
-                <i class="fas fa-print"></i> Print Vouchers
-            </button>
-            <button class="btn btn-danger" onclick="clearForms()">
-                <i class="fas fa-trash-alt"></i> Clear Forms
-            </button>
-        </div>
-        
-        <div class="script-status" id="scriptStatus"></div>
+  <h2>Cash Book Entry</h2>
+  <div class="container">
+    <!-- Receipt Section -->
+    <div class="section">
+      <h3>Receipt</h3>
+      <label>Date</label>
+      <input type="date" id="receiptDate">
+      <label>Description</label>
+      <input type="text" id="receiptDesc">
+      <label>Bank</label>
+      <input type="text" id="receiptBank">
+      <label>Cash</label>
+      <input type="number" id="receiptCash">
+      <label>Remarks</label>
+      <textarea id="receiptRemarks"></textarea>
+      <button onclick="saveEntry('receipt')">Save Receipt</button>
     </div>
 
-    <div class="print-area" id="printArea">
-        <div class="voucher" id="paymentVoucherPrint">
-            <div class="voucher-header">
-                <div class="voucher-title">PAYMENT VOUCHER</div>
-                <div id="paymentVoucherNo"></div>
-            </div>
-            <div class="voucher-details">
-                <div class="voucher-row">
-                    <div class="voucher-label">Date:</div>
-                    <div class="voucher-value" id="paymentVoucherDate"></div>
-                </div>
-                <div class="voucher-row">
-                    <div class="voucher-label">Description:</div>
-                    <div class="voucher-value" id="paymentVoucherDescription"></div>
-                </div>
-                <div class="voucher-row">
-                    <div class="voucher-label">Bank:</div>
-                    <div class="voucher-value" id="paymentVoucherBank"></div>
-                </div>
-                <div class="voucher-row">
-                    <div class="voucher-label">Cash:</div>
-                    <div class="voucher-value" id="paymentVoucherCash"></div>
-                </div>
-                <div class="voucher-row">
-                    <div class="voucher-label">Remarks:</div>
-                    <div class="voucher-value" id="paymentVoucherRemarks"></div>
-                </div>
-            </div>
-            <div class="voucher-amount" id="paymentVoucherTotal"></div>
-            <div class="voucher-footer">
-                <div class="signature">
-                    <div class="signature-line"></div>
-                    <div>Prepared By</div>
-                </div>
-                <div class="signature">
-                    <div class="signature-line"></div>
-                    <div>Approved By</div>
-                </div>
-                <div class="signature">
-                    <div class="signature-line"></div>
-                    <div>Received By</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="voucher" id="receiptVoucherPrint">
-            <div class="voucher-header">
-                <div class="voucher-title">RECEIPT VOUCHER</div>
-                <div id="receiptVoucherNo"></div>
-            </div>
-            <div class="voucher-details">
-                <div class="voucher-row">
-                    <div class="voucher-label">Date:</div>
-                    <div class="voucher-value" id="receiptVoucherDate"></div>
-                </div>
-                <div class="voucher-row">
-                    <div class="voucher-label">Description:</div>
-                    <div class="voucher-value" id="receiptVoucherDescription"></div>
-                </div>
-                <div class="voucher-row">
-                    <div class="voucher-label">Bank:</div>
-                    <div class="voucher-value" id="receiptVoucherBank"></div>
-                </div>
-                <div class="voucher-row">
-                    <div class="voucher-label">Cash:</div>
-                    <div class="voucher-value" id="receiptVoucherCash"></div>
-                </div>
-                <div class="voucher-row">
-                    <div class="voucher-label">Remarks:</div>
-                    <div class="voucher-value" id="receiptVoucherRemarks"></div>
-                </div>
-            </div>
-            <div class="voucher-amount" id="receiptVoucherTotal"></div>
-            <div class="voucher-footer">
-                <div class="signature">
-                    <div class="signature-line"></div>
-                    <div>Prepared By</div>
-                </div>
-                <div class="signature">
-                    <div class="signature-line"></div>
-                    <div>Approved By</div>
-                </div>
-                <div class="signature">
-                    <div class="signature-line"></div>
-                    <div>Received By</div>
-                </div>
-            </div>
-        </div>
+    <!-- Payment Section -->
+    <div class="section">
+      <h3>Payment</h3>
+      <label>Date</label>
+      <input type="date" id="paymentDate">
+      <label>Description</label>
+      <input type="text" id="paymentDesc">
+      <label>Bank</label>
+      <input type="text" id="paymentBank">
+      <label>Cash</label>
+      <input type="number" id="paymentCash">
+      <label>Remarks</label>
+      <textarea id="paymentRemarks"></textarea>
+      <button onclick="saveEntry('payment')">Save Payment</button>
     </div>
+  </div>
 
-    <div class="notification" id="notification"></div>
+  <div id="voucher"></div>
 
-    <script>
-        // Google Apps Script URL
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzpJk91MJiLGAefhQUkjB-vSxBTqICwsrODmrgF7Bpk7S67gSucnadCVEMSmC2O_M_qaw/exec';
+  <script>
+    const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbx4MIv0CTEhrVapZ4t31bi1hzmzFf-3lu-E-vuKMTUXQkxkTmnBZ_ToqTwG0Chmq3D5/exec";
 
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set today's date as default
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('paymentDate').value = today;
-            document.getElementById('receiptDate').value = today;
-            
-            // Generate voucher numbers
-            generateVoucherNumbers();
-            
-            // Check script connection
-            checkScriptConnection();
+    async function saveEntry(type) {
+      let data = {};
+      if (type === "receipt") {
+        data = {
+          type: "receipt",
+          date: document.getElementById("receiptDate").value,
+          description: document.getElementById("receiptDesc").value,
+          bank: document.getElementById("receiptBank").value,
+          cash: document.getElementById("receiptCash").value,
+          remarks: document.getElementById("receiptRemarks").value
+        };
+      } else {
+        data = {
+          type: "payment",
+          date: document.getElementById("paymentDate").value,
+          description: document.getElementById("paymentDesc").value,
+          bank: document.getElementById("paymentBank").value,
+          cash: document.getElementById("paymentCash").value,
+          remarks: document.getElementById("paymentRemarks").value
+        };
+      }
+
+      try {
+        let response = await fetch(WEBAPP_URL, {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: { "Content-Type": "application/json" }
         });
 
-        // Check if the script is accessible
-        async function checkScriptConnection() {
-            const statusDiv = document.getElementById('scriptStatus');
-            
-            try {
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'GET',
-                    mode: 'no-cors'
-                });
-                
-                // Since we're using no-cors, we can't check the response status
-                // But if no exception is thrown, the URL is likely accessible
-                statusDiv.textContent = 'Google Apps Script is accessible';
-                statusDiv.className = 'script-status success';
-                statusDiv.style.display = 'block';
-                
-                // Hide after 5 seconds
-                setTimeout(() => {
-                    statusDiv.style.display = 'none';
-                }, 5000);
-            } catch (error) {
-                statusDiv.textContent = 'Error connecting to Google Apps Script. Please check the URL and deployment settings.';
-                statusDiv.className = 'script-status error';
-                statusDiv.style.display = 'block';
-                
-                console.error('Script connection error:', error);
-            }
-        }
+        let result = await response.text();
+        alert(result); // confirmation from Google Apps Script
+        generateVoucher(data);
 
-        // Generate voucher numbers
-        function generateVoucherNumbers() {
-            const date = new Date();
-            const dateStr = date.toISOString().slice(0, 10).replace(/-/g, '');
-            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-            
-            document.getElementById('paymentNo').value = `PAY-${dateStr}-${random}`;
-            document.getElementById('receiptNo').value = `REC-${dateStr}-${random}`;
-        }
+      } catch (error) {
+        alert("Error saving data: " + error);
+      }
+    }
 
-        // Save data to Google Sheets via Apps Script
-        async function saveData() {
-            const saveBtn = document.getElementById('saveBtn');
-            const originalContent = saveBtn.innerHTML;
-            
-            // Show loading state
-            saveBtn.innerHTML = '<span class="spinner"></span> Saving...';
-            saveBtn.disabled = true;
-            
-            try {
-                // Get form data
-                const paymentData = {
-                    date: document.getElementById('paymentDate').value,
-                    voucherNo: document.getElementById('paymentNo').value,
-                    description: document.getElementById('paymentDescription').value,
-                    bank: parseFloat(document.getElementById('paymentBank').value) || 0,
-                    cash: parseFloat(document.getElementById('paymentCash').value) || 0,
-                    remarks: document.getElementById('paymentRemarks').value,
-                    type: 'Payment'
-                };
-                
-                const receiptData = {
-                    date: document.getElementById('receiptDate').value,
-                    voucherNo: document.getElementById('receiptNo').value,
-                    description: document.getElementById('receiptDescription').value,
-                    bank: parseFloat(document.getElementById('receiptBank').value) || 0,
-                    cash: parseFloat(document.getElementById('receiptCash').value) || 0,
-                    remarks: document.getElementById('receiptRemarks').value,
-                    type: 'Receipt'
-                };
-                
-                // Combine data for Google Sheets
-                const sheetData = {
-                    date: paymentData.date,
-                    receiptNo: receiptData.voucherNo,
-                    receiptDescription: receiptData.description,
-                    receiptBank: receiptData.bank,
-                    receiptCash: receiptData.cash,
-                    receiptRemarks: receiptData.remarks,
-                    paymentNo: paymentData.voucherNo,
-                    paymentDescription: paymentData.description,
-                    paymentBank: paymentData.bank,
-                    paymentCash: paymentData.cash,
-                    paymentRemarks: paymentData.remarks
-                };
-                
-                // Send data to Google Apps Script
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(sheetData),
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    mode: 'cors' // Try with CORS first
-                });
-                
-                if (!response.ok) {
-                    // Try with no-cors if CORS fails
-                    const fallbackResponse = await fetch(SCRIPT_URL, {
-                        method: 'POST',
-                        body: JSON.stringify(sheetData),
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        mode: 'no-cors'
-                    });
-                    
-                    // With no-cors, we can't check the response status
-                    // So we'll assume it was successful if no exception is thrown
-                    showNotification('Data saved successfully!', 'success');
-                    generateVoucherNumbers();
-                    prepareVouchersForPrint();
-                } else {
-                    const result = await response.json();
-                    
-                    if (result.status === 'success') {
-                        // Show success message
-                        showNotification('Data saved successfully!', 'success');
-                        
-                        // Generate new voucher numbers for next entry
-                        generateVoucherNumbers();
-                        
-                        // Prepare vouchers for printing
-                        prepareVouchersForPrint();
-                    } else {
-                        throw new Error(result.message || 'Unknown error occurred');
-                    }
-                }
-                
-            } catch (error) {
-                console.error('Error saving data:', error);
-                
-                // Show detailed error message
-                let errorMessage = 'Error saving data to Google Sheets';
-                
-                if (error.message.includes('Failed to fetch')) {
-                    errorMessage = 'Network error: Could not connect to Google Apps Script. Please check your internet connection and the script URL.';
-                } else if (error.message.includes('CORS')) {
-                    errorMessage = 'CORS error: The Google Apps Script may not be configured to accept requests from this origin.';
-                } else {
-                    errorMessage = `Error: ${error.message}`;
-                }
-                
-                showNotification(errorMessage, 'error');
-            } finally {
-                // Reset button state
-                saveBtn.innerHTML = originalContent;
-                saveBtn.disabled = false;
-            }
-        }
+    function generateVoucher(data) {
+      let voucherHTML = `
+        <div class="voucher">
+          <h3>${data.type.toUpperCase()} VOUCHER</h3>
+          <p><b>Date:</b> ${data.date}</p>
+          <p><b>Description:</b> ${data.description}</p>
+          <p><b>Bank:</b> ${data.bank}</p>
+          <p><b>Cash:</b> ${data.cash}</p>
+          <p><b>Remarks:</b> ${data.remarks}</p>
+          <button class="print-btn" onclick="printVoucher(this.parentElement)">Print (A4 - 2 copies)</button>
+        </div>
+      `;
+      document.getElementById("voucher").innerHTML = voucherHTML;
+    }
 
-        // Prepare vouchers for printing
-        function prepareVouchersForPrint() {
-            // Payment voucher
-            document.getElementById('paymentVoucherNo').textContent = document.getElementById('paymentNo').value;
-            document.getElementById('paymentVoucherDate').textContent = formatDate(document.getElementById('paymentDate').value);
-            document.getElementById('paymentVoucherDescription').textContent = document.getElementById('paymentDescription').value;
-            document.getElementById('paymentVoucherBank').textContent = formatCurrency(document.getElementById('paymentBank').value);
-            document.getElementById('paymentVoucherCash').textContent = formatCurrency(document.getElementById('paymentCash').value);
-            document.getElementById('paymentVoucherRemarks').textContent = document.getElementById('paymentRemarks').value;
-            
-            const paymentTotal = (parseFloat(document.getElementById('paymentBank').value) || 0) + 
-                                (parseFloat(document.getElementById('paymentCash').value) || 0);
-            document.getElementById('paymentVoucherTotal').textContent = `Total Amount: ${formatCurrency(paymentTotal)}`;
-            
-            // Receipt voucher
-            document.getElementById('receiptVoucherNo').textContent = document.getElementById('receiptNo').value;
-            document.getElementById('receiptVoucherDate').textContent = formatDate(document.getElementById('receiptDate').value);
-            document.getElementById('receiptVoucherDescription').textContent = document.getElementById('receiptDescription').value;
-            document.getElementById('receiptVoucherBank').textContent = formatCurrency(document.getElementById('receiptBank').value);
-            document.getElementById('receiptVoucherCash').textContent = formatCurrency(document.getElementById('receiptCash').value);
-            document.getElementById('receiptVoucherRemarks').textContent = document.getElementById('receiptRemarks').value;
-            
-            const receiptTotal = (parseFloat(document.getElementById('receiptBank').value) || 0) + 
-                                (parseFloat(document.getElementById('receiptCash').value) || 0);
-            document.getElementById('receiptVoucherTotal').textContent = `Total Amount: ${formatCurrency(receiptTotal)}`;
-        }
-
-        // Print vouchers
-        function printVouchers() {
-            prepareVouchersForPrint();
-            window.print();
-        }
-
-        // Clear forms
-        function clearForms() {
-            if (confirm('Are you sure you want to clear all form data?')) {
-                document.getElementById('paymentForm').reset();
-                document.getElementById('receiptForm').reset();
-                
-                // Reset dates to today
-                const today = new Date().toISOString().split('T')[0];
-                document.getElementById('paymentDate').value = today;
-                document.getElementById('receiptDate').value = today;
-                
-                // Generate new voucher numbers
-                generateVoucherNumbers();
-                
-                showNotification('Forms cleared successfully', 'success');
-            }
-        }
-
-        // Show notification
-        function showNotification(message, type) {
-            const notification = document.getElementById('notification');
-            notification.innerHTML = message;
-            notification.className = `notification ${type}`;
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 5000);
-        }
-
-        // Format date
-        function formatDate(dateString) {
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            return new Date(dateString).toLocaleDateString(undefined, options);
-        }
-
-        // Format currency
-        function formatCurrency(amount) {
-            const value = parseFloat(amount) || 0;
-            return value.toLocaleString('en-US', {
-                style: 'currency',
-                currency: 'USD'
-            });
-        }
-    </script>
+    function printVoucher(voucherDiv) {
+      let printWindow = window.open('', '', 'height=800,width=800');
+      printWindow.document.write('<html><head><title>Voucher</title></head><body>');
+      printWindow.document.write(voucherDiv.outerHTML + "<hr>" + voucherDiv.outerHTML); // 2 copies
+      printWindow.document.write('</body></html>');
+      printWindow.document.close();
+      printWindow.print();
+    }
+  </script>
 </body>
 </html>
-

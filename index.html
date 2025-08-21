@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Registration [Onam-25]</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+  <title>Student Registration [Onam]</title>
   <style>
     :root {
       --primary: #2563eb;
       --primary-hover: #1d4ed8;
-      --header-bg: #36454F;
+      --header-bg: #36454F; /* Updated header color */
       --secondary: #64748b;
       --success: #10b981;
       --error: #ef4444;
@@ -25,9 +24,11 @@
       --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
       --radius: 0.5rem;
     }
+
     * {
       box-sizing: border-box;
     }
+
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       background-color: var(--background);
@@ -36,6 +37,7 @@
       margin: 0;
       padding: 1.5rem;
     }
+
     .container {
       max-width: 900px;
       margin: 0 auto;
@@ -44,27 +46,33 @@
       box-shadow: var(--shadow-lg);
       overflow: hidden;
     }
+
     .header {
-      background-color: var(--header-bg);
+      background-color: var(--header-bg); /* Changed from gradient to solid color */
       color: white;
       padding: 2rem;
     }
+
     .header h1 {
       margin: 0 0 0.5rem;
       font-size: 1.875rem;
       font-weight: 700;
     }
+
     .header p {
       margin: 0;
       opacity: 0.9;
       font-size: 1rem;
     }
+
     .form-content {
       padding: 2rem;
     }
+
     .form-section {
       margin-bottom: 2rem;
     }
+
     .section-title {
       font-size: 1.25rem;
       font-weight: 600;
@@ -73,16 +81,19 @@
       border-bottom: 2px solid var(--border);
       color: var(--text-primary);
     }
+
     .form-row {
       display: flex;
       flex-wrap: wrap;
       gap: 1.5rem;
       margin-bottom: 1rem;
     }
+
     .form-field {
       flex: 1 1 220px;
       min-width: 220px;
     }
+
     label {
       display: block;
       font-size: 0.875rem;
@@ -90,9 +101,11 @@
       margin-bottom: 0.5rem;
       color: var(--text-primary);
     }
+
     .required {
       color: var(--error);
     }
+
     input[type="text"],
     input[type="number"],
     select,
@@ -105,6 +118,7 @@
       transition: border-color 0.2s, box-shadow 0.2s;
       background-color: var(--card-bg);
     }
+
     input[type="text"]:focus,
     input[type="number"]:focus,
     select:focus,
@@ -113,32 +127,38 @@
       border-color: var(--border-focus);
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     }
+
     input[type="text"].error,
     input[type="number"].error,
     select.error,
     textarea.error {
       border-color: var(--error);
     }
+
     .help-text {
       font-size: 0.75rem;
       color: var(--text-secondary);
       margin-top: 0.25rem;
     }
+
     .radio-group {
       display: flex;
       gap: 1rem;
       margin-top: 0.5rem;
     }
+
     .radio-option {
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
+
     input[type="radio"] {
       width: 1rem;
       height: 1rem;
       accent-color: var(--primary);
     }
+
     .checkbox-group {
       display: flex;
       align-items: flex-start;
@@ -148,22 +168,26 @@
       background-color: var(--background);
       border-radius: var(--radius);
     }
+
     input[type="checkbox"] {
       width: 1.25rem;
       height: 1.25rem;
       accent-color: var(--primary);
       margin-top: 0.125rem;
     }
+
     .divider {
       height: 1px;
       background-color: var(--border);
       margin: 2rem 0;
     }
+
     .form-actions {
       display: flex;
       gap: 1rem;
       margin-top: 2rem;
     }
+
     button {
       padding: 0.75rem 1.5rem;
       border: none;
@@ -173,40 +197,49 @@
       cursor: pointer;
       transition: background-color 0.2s, transform 0.1s;
     }
+
     button:active {
       transform: scale(0.98);
     }
+
     .btn-primary {
       background-color: var(--primary);
       color: white;
     }
+
     .btn-primary:hover {
       background-color: var(--primary-hover);
     }
+
     .btn-secondary {
       background-color: var(--background);
       color: var(--text-primary);
       border: 1px solid var(--border);
     }
+
     .btn-secondary:hover {
       background-color: var(--border);
     }
+
     .message {
       padding: 1rem;
       border-radius: var(--radius);
       margin-top: 1rem;
       font-size: 0.875rem;
     }
+
     .message-success {
       background-color: rgba(16, 185, 129, 0.1);
       color: var(--success);
       border: 1px solid rgba(16, 185, 129, 0.2);
     }
+
     .message-error {
       background-color: rgba(239, 68, 68, 0.1);
       color: var(--error);
       border: 1px solid rgba(239, 68, 68, 0.2);
     }
+
     .loading {
       display: inline-block;
       width: 1rem;
@@ -217,19 +250,24 @@
       animation: spin 1s ease-in-out infinite;
       margin-right: 0.5rem;
     }
+
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+
+    /* Terms and conditions link styles */
     .terms-link {
       color: var(--primary);
       text-decoration: none;
       font-weight: 500;
       transition: text-decoration 0.2s;
     }
+
     .terms-link:hover, .terms-link:focus {
       text-decoration: underline;
       outline: none;
     }
+
     @media (max-width: 640px) {
       .form-field {
         flex: 1 1 100%;
@@ -242,117 +280,6 @@
       button {
         width: 100%;
       }
-    }
-    /* Image Upload Styles */
-    .image-upload-container {
-      margin-top: 1rem;
-    }
-    .image-upload-btn {
-      display: inline-block;
-      padding: 0.75rem 1.5rem;
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      border-radius: var(--radius);
-      cursor: pointer;
-      font-size: 0.875rem;
-      font-weight: 500;
-      transition: background-color 0.2s;
-      width: 100%;
-    }
-    .image-upload-btn:hover {
-      background-color: var(--primary-hover);
-    }
-    .image-preview {
-      margin-top: 1rem;
-      display: flex;
-      justify-content: center;
-    }
-    .preview-item {
-      position: relative;
-      width: 150px;
-      height: 150px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-    }
-    .preview-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .preview-remove {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      background-color: rgba(255, 255, 255, 0.8);
-      color: var(--error);
-      border: none;
-      border-radius: 50%;
-      width: 24px;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .preview-remove:hover {
-      background-color: var(--error);
-      color: white;
-    }
-    /* Modal Styles */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-    }
-    .modal-content {
-      background-color: white;
-      border-radius: var(--radius);
-      width: 90%;
-      max-width: 800px;
-      max-height: 90vh;
-      overflow: auto;
-      box-shadow: var(--shadow-lg);
-    }
-    .modal-header {
-      padding: 1rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .modal-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-    }
-    .modal-close {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: var(--text-secondary);
-    }
-    .modal-body {
-      padding: 1rem;
-    }
-    .crop-container {
-      max-height: 400px;
-      width: 100%;
-    }
-    .crop-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 1rem;
-      margin-top: 1rem;
     }
   </style>
 </head>
@@ -408,8 +335,8 @@
             </div>
             <div class="form-field">
               <label for="fatherWhats">Father's WhatsApp no. <span class="required">*</span></label>
-              <input id="fatherWhats" name="fatherWhats" type="text" inputmode="tel" pattern="\d{8,15}" required placeholder="Only digits, 8-15 chars">
-              <span class="help-text">Digits only (8–15). Don't add + or spaces.</span>
+              <input id="fatherWhats" name="fatherWhats" type="text" inputmode="tel" pattern="\d{8,15}" placeholder="Only digits, 8-15 chars" required>
+              <span class="help-text">Digits only (10). Don't add + or spaces.</span>
             </div>
             <div class="form-field">
               <label for="fatherOcc">Father's occupation <span class="required">*</span></label>
@@ -427,7 +354,7 @@
             </div>
             <div class="form-field">
               <label for="motherWhats">Mother's WhatsApp no. <span class="required">*</span></label>
-              <input id="motherWhats" name="motherWhats" type="text" inputmode="tel" pattern="\d{8,15}" required placeholder="Only digits, 8–15 chars">
+              <input id="motherWhats" name="motherWhats" type="text" inputmode="tel" pattern="\d{8,15}" placeholder="Only digits, 8-15 chars" required>
               <span class="help-text">Digits only (8–15). Don't add + or spaces.</span>
             </div>
             <div class="form-field">
@@ -480,20 +407,6 @@
           </div>
         </section>
         
-        <div class="divider"></div>
-        
-        <section class="form-section">
-          <h2 class="section-title">Photo Upload</h2>
-          <div class="form-field">
-            <label for="photoUpload">Upload Student Photo <span class="required">*</span></label>
-            <div class="image-upload-container">
-              <button type="button" class="image-upload-btn" id="uploadPhoto">Choose Photo</button>
-              <input type="file" id="photoInput" accept="image/*" style="display: none;">
-              <div class="image-preview" id="photoPreview"></div>
-            </div>
-          </div>
-        </section>
-        
         <div class="checkbox-group">
           <input type="checkbox" id="declaration" name="declaration" required>
           <label for="declaration">
@@ -501,9 +414,26 @@
             I have read and agree to the 
             <a href="https://sites.google.com/view/ggsa-terms-conditions?usp=sharing" target="_blank" class="terms-link">Terms and Conditions</a>. 
             <span class="required"> [First click the Submit Registration button, then click the Add Student Photo button][Please send a Payment Screenshot to +91 7994451210]*</span>
+	    
           </label>
         </div>
-        
+
+	<button onclick="window.open('https://ggcaphotos.github.io/Student_photos/', '_blank')"
+        style="padding: 12px 24px; 
+               font-size: 16px; 
+               background-color: #302e2e; 
+               color: white; 
+               border: none; 
+               border-radius: 4px; 
+               cursor: pointer;
+               transition: all 0.3s ease;"
+        onmouseover="this.style.backgroundColor='#2d302d'"
+        onmouseout="this.style.backgroundColor='#302e2e'">
+  Add Student Photo
+</button>
+
+</button>
+	        
         <div class="form-actions">
           <button type="submit" class="btn-primary" id="submitBtn">Submit Registration</button>
           <button type="button" class="btn-secondary" id="clearBtn">Clear Form</button>
@@ -513,130 +443,19 @@
       </form>
     </div>
   </div>
-  
-  <!-- Image Crop Modal -->
-  <div id="cropModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title">Crop Photo</h3>
-        <button class="modal-close" id="modalClose">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="crop-container">
-          <img id="cropImage" style="max-width: 100%;">
-        </div>
-        <div class="crop-actions">
-          <button type="button" class="btn-secondary" id="cropCancel">Cancel</button>
-          <button type="button" class="btn-primary" id="cropConfirm">Crop & Save</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
   <script>
-    // Google Apps Script URL
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby9GsJC-Ws2KrQmjPda40x8m0JnFO8J3e4yTSmM42VexFSryimU-P1BsGG11_TkXR7LUg/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxvyRRQfG6mU6q90ErFhLCPrD7bSPA6ljOsvBnM2GS6zmxuNSkuA5O/exec";
     
-    // Image upload variables
-    let cropper;
-    let photoData = null;
-    
-    // Image upload handlers
-    document.getElementById('uploadPhoto').addEventListener('click', () => {
-      document.getElementById('photoInput').click();
+    // Clear form
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      if (!confirm('Are you sure you want to clear the form? All entered data will be lost.')) return;
+      document.getElementById('regForm').reset();
+      document.getElementById('messageArea').innerHTML = '';
+      clearFieldErrors();
     });
     
-    document.getElementById('photoInput').addEventListener('change', (e) => {
-      handleImageUpload(e);
-    });
-    
-    // Modal handlers
-    document.getElementById('modalClose').addEventListener('click', closeModal);
-    document.getElementById('cropCancel').addEventListener('click', closeModal);
-    
-    document.getElementById('cropConfirm').addEventListener('click', () => {
-      const canvas = cropper.getCroppedCanvas({
-        width: 800,
-        height: 600
-      });
-      
-      canvas.toBlob((blob) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          const base64data = reader.result;
-          photoData = base64data;
-          displayImagePreview(base64data, 'photoPreview');
-          closeModal();
-        };
-        reader.readAsDataURL(blob);
-      }, 'image/jpeg', 0.9);
-    });
-    
-    function handleImageUpload(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const img = document.getElementById('cropImage');
-        img.src = event.target.result;
-        
-        openModal();
-        
-        // Initialize cropper
-        if (cropper) {
-          cropper.destroy();
-        }
-        
-        cropper = new Cropper(img, {
-          aspectRatio: NaN, // Free aspect ratio for photos
-          viewMode: 1,
-          responsive: true,
-          restore: false,
-          checkCrossOrigin: false,
-          checkOrientation: false
-        });
-      };
-      reader.readAsDataURL(file);
-    }
-    
-    function openModal() {
-      document.getElementById('cropModal').style.display = 'flex';
-    }
-    
-    function closeModal() {
-      document.getElementById('cropModal').style.display = 'none';
-      if (cropper) {
-        cropper.destroy();
-        cropper = null;
-      }
-    }
-    
-    function displayImagePreview(base64data, previewContainerId) {
-      const previewContainer = document.getElementById(previewContainerId);
-      previewContainer.innerHTML = '';
-      
-      const previewItem = document.createElement('div');
-      previewItem.className = 'preview-item';
-      
-      const img = document.createElement('img');
-      img.src = base64data;
-      
-      const removeBtn = document.createElement('button');
-      removeBtn.className = 'preview-remove';
-      removeBtn.innerHTML = '×';
-      removeBtn.addEventListener('click', () => {
-        photoData = null;
-        previewContainer.innerHTML = '';
-      });
-      
-      previewItem.appendChild(img);
-      previewItem.appendChild(removeBtn);
-      previewContainer.appendChild(previewItem);
-    }
-    
-    // Form submission
+    // Validate and submit form
     document.getElementById('regForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       
@@ -644,123 +463,48 @@
       clearFieldErrors();
       
       // Validate required fields
-      const studentName = document.getElementById('studentName');
-      const place = document.getElementById('place');
-      const age = document.getElementById('age');
-      const className = document.getElementById('className');
-      const school = document.getElementById('school');
-      const fatherName = document.getElementById('fatherName');
-      const fatherWhats = document.getElementById('fatherWhats');
-      const fatherOcc = document.getElementById('fatherOcc');
-      const motherName = document.getElementById('motherName');
-      const motherWhats = document.getElementById('motherWhats');
-      const motherOcc = document.getElementById('motherOcc');
-      const regFeePaid = document.querySelector('input[name="regFeePaid"]:checked');
-      const feeStructure = document.getElementById('feeStructure');
-      const feePaid = document.querySelector('input[name="feePaid"]:checked');
-      const declaration = document.getElementById('declaration');
+      const requiredFields = document.querySelectorAll('#regForm [required]');
+      let isValid = true;
       
-      if (!studentName.value.trim()) {
-        studentName.classList.add('error');
-        studentName.focus();
-        showMessage('Please enter the student name.', true);
+      requiredFields.forEach(field => {
+        if (!field.value.trim() || (field.type === 'radio' && !document.querySelector(`input[name="${field.name}"]:checked`))) {
+          isValid = false;
+          if (field.type !== 'radio') {
+            field.classList.add('error');
+          }
+        }
+      });
+      
+      if (!isValid) {
+        showMessage('Please fill in all required fields.', true);
         return;
       }
       
-      if (!place.value) {
-        place.classList.add('error');
-        place.focus();
-        showMessage('Please select a place.', true);
-        return;
+      // Validate WhatsApp numbers
+      const phoneFields = ['fatherWhats', 'motherWhats'];
+      for (const id of phoneFields) {
+        const el = document.getElementById(id);
+        if (!/^[0-9]{8,15}$/.test(el.value.trim())) {
+          el.classList.add('error');
+          el.focus();
+          showMessage('Please enter a valid WhatsApp number (8–15 digits) for ' + el.previousElementSibling.textContent, true);
+          return;
+        }
       }
       
-      if (!age.value.trim() || isNaN(parseInt(age.value)) || parseInt(age.value) < 3 || parseInt(age.value) > 25) {
-        age.classList.add('error');
-        age.focus();
+      // Validate age
+      const ageField = document.getElementById('age');
+      const age = parseInt(ageField.value);
+      if (isNaN(age) || age < 3 || age > 25) {
+        ageField.classList.add('error');
+        ageField.focus();
         showMessage('Please enter a valid age between 3 and 25.', true);
         return;
       }
       
-      if (!className.value.trim()) {
-        className.classList.add('error');
-        className.focus();
-        showMessage('Please enter the class name.', true);
-        return;
-      }
-      
-      if (!school.value.trim()) {
-        school.classList.add('error');
-        school.focus();
-        showMessage('Please enter the school name.', true);
-        return;
-      }
-      
-      if (!fatherName.value.trim()) {
-        fatherName.classList.add('error');
-        fatherName.focus();
-        showMessage('Please enter the father\'s name.', true);
-        return;
-      }
-      
-      if (!fatherWhats.value.trim() || !/^\d{8,15}$/.test(fatherWhats.value.trim())) {
-        fatherWhats.classList.add('error');
-        fatherWhats.focus();
-        showMessage('Please enter a valid father\'s WhatsApp number (8–15 digits).', true);
-        return;
-      }
-      
-      if (!fatherOcc.value.trim()) {
-        fatherOcc.classList.add('error');
-        fatherOcc.focus();
-        showMessage('Please enter the father\'s occupation.', true);
-        return;
-      }
-      
-      if (!motherName.value.trim()) {
-        motherName.classList.add('error');
-        motherName.focus();
-        showMessage('Please enter the mother\'s name.', true);
-        return;
-      }
-      
-      if (!motherWhats.value.trim() || !/^\d{8,15}$/.test(motherWhats.value.trim())) {
-        motherWhats.classList.add('error');
-        motherWhats.focus();
-        showMessage('Please enter a valid mother\'s WhatsApp number (8–15 digits).', true);
-        return;
-      }
-      
-      if (!motherOcc.value.trim()) {
-        motherOcc.classList.add('error');
-        motherOcc.focus();
-        showMessage('Please enter the mother\'s occupation.', true);
-        return;
-      }
-      
-      if (!regFeePaid) {
-        showMessage('Please indicate whether registration fee was paid.', true);
-        return;
-      }
-      
-      if (!feeStructure.value) {
-        feeStructure.classList.add('error');
-        feeStructure.focus();
-        showMessage('Please select a fee structure.', true);
-        return;
-      }
-      
-      if (!feePaid) {
-        showMessage('Please indicate whether fee was paid.', true);
-        return;
-      }
-      
-      if (!declaration.checked) {
+      // Check declaration
+      if (!document.getElementById('declaration').checked) {
         showMessage('You must agree to the declaration and terms and conditions before submitting.', true);
-        return;
-      }
-      
-      if (!photoData) {
-        showMessage('Please upload a student photo.', true);
         return;
       }
       
@@ -771,25 +515,8 @@
       submitBtn.disabled = true;
       
       try {
-        // Prepare form data including photo
-        const formData = new FormData();
-        formData.append('studentName', studentName.value);
-        formData.append('place', place.value);
-        formData.append('age', age.value);
-        formData.append('className', className.value);
-        formData.append('school', school.value);
-        formData.append('fatherName', fatherName.value);
-        formData.append('fatherWhats', fatherWhats.value);
-        formData.append('fatherOcc', fatherOcc.value);
-        formData.append('motherName', motherName.value);
-        formData.append('motherWhats', motherWhats.value);
-        formData.append('motherOcc', motherOcc.value);
-        formData.append('regFeePaid', regFeePaid.value);
-        formData.append('feeStructure', feeStructure.value);
-        formData.append('feePaid', feePaid.value);
-        formData.append('photoData', photoData);
-        
         // Send form data to Google Apps Script
+        const formData = new FormData(document.getElementById('regForm'));
         const response = await fetch(WEB_APP_URL, {
           method: "POST",
           body: formData,
@@ -800,12 +527,26 @@
         // Show success message
         showMessage('Registration submitted successfully!', false);
         
+        // Show detailed success message
+        const successMessage = document.createElement('div');
+        successMessage.className = 'message message-success';
+        successMessage.innerHTML = `
+          <strong>Thank you!</strong> Your registration has been received.
+          <br>Our team will contact you shortly. We wish you a successful career in Cricket and in Life. GGCA Team.
+        `;
+        
+        const messageArea = document.getElementById('messageArea');
+        messageArea.innerHTML = '';
+        messageArea.appendChild(successMessage);
+        
         console.log("Server response:", result);
         
+        // Reset form after successful submission
+        document.getElementById('regForm').reset();
       } catch (error) {
         showMessage('Error submitting registration. Please try again.', true);
         console.error("Error:", error);
-        
+      } finally {
         // Reset button state
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
@@ -828,21 +569,12 @@
     }
     
     // Remove error class when user starts typing
-    document.querySelectorAll('input').forEach(field => {
+    document.querySelectorAll('input, select').forEach(field => {
       field.addEventListener('input', () => {
         if (field.classList.contains('error')) {
           field.classList.remove('error');
         }
       });
-    });
-    
-    // Clear form handler
-    document.getElementById('clearBtn').addEventListener('click', () => {
-      if (!confirm('Are you sure you want to clear the form? All entered data will be lost.')) return;
-      document.getElementById('regForm').reset();
-      document.getElementById('photoPreview').innerHTML = '';
-      photoData = null;
-      clearFieldErrors();
     });
     
     // Focus on first field when page loads
@@ -852,4 +584,7 @@
   </script>
 </body>
 </html>
+
+
+
 

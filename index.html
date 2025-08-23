@@ -352,38 +352,7 @@
 
     <div class="container">
         <div class="main-content">
-            <div class="voucher-section payment-section">
-                <h2 class="section-title"><i class="fas fa-money-bill-wave"></i> Payment Voucher</h2>
-                <form id="paymentForm">
-                    <div class="form-group">
-                        <label for="paymentDate">Date</label>
-                        <input type="date" id="paymentDate" name="date" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="paymentVoucherNo">Voucher No.</label>
-                        <input type="text" id="paymentVoucherNo" name="voucherNo" placeholder="Enter voucher number" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="paymentDescription">Description</label>
-                        <textarea id="paymentDescription" name="description" rows="3" placeholder="Enter description" required></textarea>
-                    </div>
-                    <div class="amount-input">
-                        <div class="form-group">
-                            <label for="paymentBank">Bank</label>
-                            <input type="number" id="paymentBank" name="bank" step="0.01" placeholder="0.00">
-                        </div>
-                        <div class="form-group">
-                            <label for="paymentCash">Cash</label>
-                            <input type="number" id="paymentCash" name="cash" step="0.01" placeholder="0.00">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="paymentRemarks">Remarks</label>
-                        <textarea id="paymentRemarks" name="remarks" rows="2" placeholder="Additional remarks"></textarea>
-                    </div>
-                </form>
-            </div>
-
+            <!-- Receipt Section (now on the left) -->
             <div class="voucher-section receipt-section">
                 <h2 class="section-title"><i class="fas fa-receipt"></i> Receipt Voucher</h2>
                 <form id="receiptForm">
@@ -415,6 +384,39 @@
                     </div>
                 </form>
             </div>
+
+            <!-- Payment Section (now on the right) -->
+            <div class="voucher-section payment-section">
+                <h2 class="section-title"><i class="fas fa-money-bill-wave"></i> Payment Voucher</h2>
+                <form id="paymentForm">
+                    <div class="form-group">
+                        <label for="paymentDate">Date</label>
+                        <input type="date" id="paymentDate" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="paymentVoucherNo">Voucher No.</label>
+                        <input type="text" id="paymentVoucherNo" name="voucherNo" placeholder="Enter voucher number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="paymentDescription">Description</label>
+                        <textarea id="paymentDescription" name="description" rows="3" placeholder="Enter description" required></textarea>
+                    </div>
+                    <div class="amount-input">
+                        <div class="form-group">
+                            <label for="paymentBank">Bank</label>
+                            <input type="number" id="paymentBank" name="bank" step="0.01" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label for="paymentCash">Cash</label>
+                            <input type="number" id="paymentCash" name="cash" step="0.01" placeholder="0.00">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="paymentRemarks">Remarks</label>
+                        <textarea id="paymentRemarks" name="remarks" rows="2" placeholder="Additional remarks"></textarea>
+                    </div>
+                </form>
+            </div>
         </div>
 
         <div class="action-buttons">
@@ -433,50 +435,6 @@
     </div>
 
     <div class="print-area" id="printArea">
-        <div class="voucher" id="paymentVoucherPrint">
-            <div class="voucher-header">
-                <div class="voucher-title">PAYMENT VOUCHER</div>
-                <div id="paymentVoucherNoPrint"></div>
-            </div>
-            <div class="voucher-details">
-                <div class="voucher-row">
-                    <div class="voucher-label">Date:</div>
-                    <div class="voucher-value" id="paymentVoucherDatePrint"></div>
-                </div>
-                <div class="voucher-row">
-                    <div class="voucher-label">Description:</div>
-                    <div class="voucher-value" id="paymentVoucherDescriptionPrint"></div>
-                </div>
-                <div class="voucher-row">
-                    <div class="voucher-label">Bank:</div>
-                    <div class="voucher-value" id="paymentVoucherBankPrint"></div>
-                </div>
-                <div class="voucher-row">
-                    <div class="voucher-label">Cash:</div>
-                    <div class="voucher-value" id="paymentVoucherCashPrint"></div>
-                </div>
-                <div class="voucher-row">
-                    <div class="voucher-label">Remarks:</div>
-                    <div class="voucher-value" id="paymentVoucherRemarksPrint"></div>
-                </div>
-            </div>
-            <div class="voucher-amount" id="paymentVoucherTotalPrint"></div>
-            <div class="voucher-footer">
-                <div class="signature">
-                    <div class="signature-line"></div>
-                    <div>Prepared By</div>
-                </div>
-                <div class="signature">
-                    <div class="signature-line"></div>
-                    <div>Approved By</div>
-                </div>
-                <div class="signature">
-                    <div class="signature-line"></div>
-                    <div>Received By</div>
-                </div>
-            </div>
-        </div>
-
         <div class="voucher" id="receiptVoucherPrint">
             <div class="voucher-header">
                 <div class="voucher-title">RECEIPT VOUCHER</div>
@@ -505,6 +463,50 @@
                 </div>
             </div>
             <div class="voucher-amount" id="receiptVoucherTotalPrint"></div>
+            <div class="voucher-footer">
+                <div class="signature">
+                    <div class="signature-line"></div>
+                    <div>Prepared By</div>
+                </div>
+                <div class="signature">
+                    <div class="signature-line"></div>
+                    <div>Approved By</div>
+                </div>
+                <div class="signature">
+                    <div class="signature-line"></div>
+                    <div>Received By</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="voucher" id="paymentVoucherPrint">
+            <div class="voucher-header">
+                <div class="voucher-title">PAYMENT VOUCHER</div>
+                <div id="paymentVoucherNoPrint"></div>
+            </div>
+            <div class="voucher-details">
+                <div class="voucher-row">
+                    <div class="voucher-label">Date:</div>
+                    <div class="voucher-value" id="paymentVoucherDatePrint"></div>
+                </div>
+                <div class="voucher-row">
+                    <div class="voucher-label">Description:</div>
+                    <div class="voucher-value" id="paymentVoucherDescriptionPrint"></div>
+                </div>
+                <div class="voucher-row">
+                    <div class="voucher-label">Bank:</div>
+                    <div class="voucher-value" id="paymentVoucherBankPrint"></div>
+                </div>
+                <div class="voucher-row">
+                    <div class="voucher-label">Cash:</div>
+                    <div class="voucher-value" id="paymentVoucherCashPrint"></div>
+                </div>
+                <div class="voucher-row">
+                    <div class="voucher-label">Remarks:</div>
+                    <div class="voucher-value" id="paymentVoucherRemarksPrint"></div>
+                </div>
+            </div>
+            <div class="voucher-amount" id="paymentVoucherTotalPrint"></div>
             <div class="voucher-footer">
                 <div class="signature">
                     <div class="signature-line"></div>
@@ -694,19 +696,7 @@
 
         // Prepare vouchers for printing
         function prepareVouchersForPrint() {
-            // Payment voucher
-            document.getElementById('paymentVoucherNoPrint').textContent = document.getElementById('paymentVoucherNo').value;
-            document.getElementById('paymentVoucherDatePrint').textContent = formatDate(document.getElementById('paymentDate').value);
-            document.getElementById('paymentVoucherDescriptionPrint').textContent = document.getElementById('paymentDescription').value;
-            document.getElementById('paymentVoucherBankPrint').textContent = formatCurrency(document.getElementById('paymentBank').value);
-            document.getElementById('paymentVoucherCashPrint').textContent = formatCurrency(document.getElementById('paymentCash').value);
-            document.getElementById('paymentVoucherRemarksPrint').textContent = document.getElementById('paymentRemarks').value;
-            
-            const paymentTotal = (parseFloat(document.getElementById('paymentBank').value) || 0) + 
-                                (parseFloat(document.getElementById('paymentCash').value) || 0);
-            document.getElementById('paymentVoucherTotalPrint').textContent = `Total Amount: ${formatCurrency(paymentTotal)}`;
-            
-            // Receipt voucher
+            // Receipt voucher (now first in print order)
             document.getElementById('receiptVoucherNoPrint').textContent = document.getElementById('receiptVoucherNo').value;
             document.getElementById('receiptVoucherDatePrint').textContent = formatDate(document.getElementById('receiptDate').value);
             document.getElementById('receiptVoucherDescriptionPrint').textContent = document.getElementById('receiptDescription').value;
@@ -717,6 +707,18 @@
             const receiptTotal = (parseFloat(document.getElementById('receiptBank').value) || 0) + 
                                 (parseFloat(document.getElementById('receiptCash').value) || 0);
             document.getElementById('receiptVoucherTotalPrint').textContent = `Total Amount: ${formatCurrency(receiptTotal)}`;
+            
+            // Payment voucher (now second in print order)
+            document.getElementById('paymentVoucherNoPrint').textContent = document.getElementById('paymentVoucherNo').value;
+            document.getElementById('paymentVoucherDatePrint').textContent = formatDate(document.getElementById('paymentDate').value);
+            document.getElementById('paymentVoucherDescriptionPrint').textContent = document.getElementById('paymentDescription').value;
+            document.getElementById('paymentVoucherBankPrint').textContent = formatCurrency(document.getElementById('paymentBank').value);
+            document.getElementById('paymentVoucherCashPrint').textContent = formatCurrency(document.getElementById('paymentCash').value);
+            document.getElementById('paymentVoucherRemarksPrint').textContent = document.getElementById('paymentRemarks').value;
+            
+            const paymentTotal = (parseFloat(document.getElementById('paymentBank').value) || 0) + 
+                                (parseFloat(document.getElementById('paymentCash').value) || 0);
+            document.getElementById('paymentVoucherTotalPrint').textContent = `Total Amount: ${formatCurrency(paymentTotal)}`;
         }
 
         // Print vouchers

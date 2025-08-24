@@ -1,264 +1,773 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
-    />
-    <title>TravelEzy Cash Book</title>
-  </head>
-  <body>
-    <section class="hero is-primary is-bold">
-      <div class="hero-body">
-        <div class="container">
-          <h1 class="title">TravelEzy Cash Book</h1>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TE Cash Book - Entry System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            overflow: hidden;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: 30px 30px;
+            opacity: 0.1;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .config-panel {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 25px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .sheet-config {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .sheet-config label {
+            font-weight: 600;
+            color: #2c3e50;
+            min-width: 140px;
+            font-size: 14px;
+        }
+
+        .sheet-config input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .sheet-config input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .entry-section {
+            padding: 40px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        }
+
+        .entry-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 30px;
+            background: #f1f3f4;
+            border-radius: 15px;
+            padding: 5px;
+            max-width: 400px;
+            margin: 0 auto 30px;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 15px 25px;
+            border: none;
+            background: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #6c757d;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .entry-form {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid #e9ecef;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f1f3f4;
+        }
+
+        .form-header h2 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .form-header .subtitle {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 25px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .required {
+            color: #dc3545;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 14px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #fafbfc;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            background: white;
+            transform: translateY(-1px);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        .amount-inputs {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #dee2e6;
+        }
+
+        .amount-inputs h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .total-display {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .button-section {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 35px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 140px;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6f42c1 0%, #e83e8c 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(111, 66, 193, 0.3);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(111, 66, 193, 0.4);
+        }
+
+        .btn-clear {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+        }
+
+        .btn-clear:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-weight: 500;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #d1edff 0%, #c3e7fd 100%);
+            color: #0c5460;
+            border: 2px solid #b6e0f7;
+        }
+
+        .alert-error {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+            border: 2px solid #f1aeb5;
+        }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .loading .btn {
+            position: relative;
+        }
+
+        .loading .btn::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            
+            .print-content, .print-content * {
+                visibility: visible;
+            }
+            
+            .print-content {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white;
+                padding: 20px;
+                font-size: 12px;
+                color: black;
+            }
+        }
+
+        .print-content {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .entry-section {
+                padding: 25px 20px;
+            }
+            
+            .entry-form {
+                padding: 25px 20px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .sheet-config {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .sheet-config label {
+                min-width: auto;
+                margin-bottom: 5px;
+            }
+            
+            .button-section {
+                flex-direction: column;
+            }
+            
+            .btn {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 TE Cash Book</h1>
+            <p>Professional Data Entry System</p>
         </div>
-      </div>
-    </section>
-    <form id="form" class="container m-4 pl-4">
-      <div class="field">
-        <label class="label">Receipt Date</label>
-        <div class="control">
-          <input
-            class="input"
-            type="date"
-            placeholder="Your Receipt Date"
-            name="Receipt_Date"
-          />
+
+        <div class="config-panel">
+            <div class="sheet-config">
+                <div style="text-align: center;">
+                    <span style="color: #28a745; font-weight: 600;">🟢 Connected to Google Sheets</span>
+                    <p style="margin: 5px 0 0 0; font-size: 12px; color: #6c757d;">Data will be automatically saved to your TE Cash Book</p>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="field">
-        <label class="label">Receipt Voucher Number</label>
-        <div class="control">
-          <input
-            class="input"
-            type="text"
-            placeholder="Your Voucher Number"
-            name="Voucher_Number"
-          />
+
+        <div class="entry-section">
+            <div class="entry-tabs">
+                <button class="tab-button active" onclick="switchTab('receipt')">
+                    📈 Receipt
+                </button>
+                <button class="tab-button" onclick="switchTab('payment')">
+                    📉 Payment
+                </button>
+            </div>
+
+            <div class="entry-form" id="entryForm">
+                <div class="form-header">
+                    <h2 id="formTitle">Receipt Entry</h2>
+                    <p class="subtitle" id="formSubtitle">Enter receipt details below</p>
+                </div>
+
+                <form id="dataEntryForm">
+                    <div class="form-grid">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="entryDate">📅 Date <span class="required">*</span></label>
+                                <input type="date" id="entryDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="voucherNumber">🎫 Voucher Number <span class="required">*</span></label>
+                                <input type="text" id="voucherNumber" placeholder="e.g., R001 or P001" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">📝 Description <span class="required">*</span></label>
+                            <textarea id="description" placeholder="Enter detailed description of the transaction..." required></textarea>
+                        </div>
+
+                        <div class="amount-inputs">
+                            <h4>💰 Amount Details</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="bankAmount" id="bankLabel">🏦 Bank Amount</label>
+                                    <input type="number" id="bankAmount" placeholder="0.00" step="0.01" min="0" oninput="calculateTotal()">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cashAmount" id="cashLabel">💵 Cash Amount</label>
+                                    <input type="number" id="cashAmount" placeholder="0.00" step="0.01" min="0" oninput="calculateTotal()">
+                                </div>
+                            </div>
+                            <div class="total-display" id="totalDisplay">
+                                Total Amount: ₹0.00
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="remarks">💭 Remarks</label>
+                            <textarea id="remarks" placeholder="Additional notes or comments (optional)..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="button-section">
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            💾 Save Entry
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="printVoucher()">
+                            🖨️ Print Voucher
+                        </button>
+                        <button type="button" class="btn btn-clear" onclick="clearForm()">
+                            🗑️ Clear Form
+                        </button>
+                    </div>
+                </form>
+
+                <div id="alertMessage" class="alert"></div>
+            </div>
         </div>
-      </div>
-      <div class="field">
-        <label class="label">Description</label>
-        <div class="control">
-          <input
-            class="input"
-            type="text"
-            placeholder="Description of Amount"
-            name="Description"
-          />
+    </div>
+
+    <!-- Print Template -->
+    <div class="print-content" id="printContent">
+        <div style="text-align: center; border-bottom: 2px solid #000; margin-bottom: 20px; padding-bottom: 15px;">
+            <h1 style="margin: 0; font-size: 24px;">TE CASH BOOK</h1>
+            <h2 id="printVoucherType" style="margin: 5px 0; font-size: 18px;">RECEIPT VOUCHER</h2>
         </div>
-      </div>
-      <div class="field">
-        <label class="label">Bank</label>
-        <div class="control">
-          <input
-            class="input"
-            type="number"
-            placeholder="Received in Bank"
-            name="Bank"
-          />
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+            <div style="border: 1px solid #000; padding: 15px;">
+                <h3 style="margin-bottom: 15px; text-decoration: underline;">Transaction Details</h3>
+                <p><strong>Date:</strong> <span id="printDate"></span></p>
+                <p><strong>Voucher No:</strong> <span id="printVoucherNo"></span></p>
+                <p><strong>Description:</strong> <span id="printDescription"></span></p>
+                <p><strong>Bank Amount:</strong> ₹<span id="printBankAmount"></span></p>
+                <p><strong>Cash Amount:</strong> ₹<span id="printCashAmount"></span></p>
+                <p><strong>Total Amount:</strong> ₹<span id="printTotalAmount"></span></p>
+                <p><strong>Remarks:</strong> <span id="printRemarks"></span></p>
+            </div>
+            
+            <div style="border: 1px solid #000; padding: 15px;">
+                <h3 style="margin-bottom: 15px; text-decoration: underline;">Authorization</h3>
+                <p style="margin: 20px 0;"><strong>Prepared By:</strong> _________________</p>
+                <p style="margin: 20px 0;"><strong>Approved By:</strong> _________________</p>
+                <p style="margin: 20px 0;"><strong>Received/Paid By:</strong> _________________</p>
+                <br>
+                <p style="margin: 20px 0;"><strong>Signature:</strong> _________________</p>
+                <p style="margin: 20px 0;"><strong>Date:</strong> _________________</p>
+            </div>
         </div>
-      </div>
-      <div class="field">
-        <label class="label">Cash</label>
-        <div class="control">
-          <input
-            class="input"
-            type="number"
-            placeholder="Received in Cash"
-            name="Cash"
-          />
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">Remarks</label>
-        <div class="control">
-          <input
-            class="input"
-            type="Remarks"
-            placeholder="Remarks"
-            name="Remarks"
-          />
-        </div>
-         <div class="field">
-        <label class="label">Payment Date</label>
-        <div class="control">
-          <input
-            class="input"
-            type="date"
-            placeholder="Your Receipt Date"
-            name="Receipt_Date"
-          />
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">Payment Voucher Number</label>
-        <div class="control">
-          <input
-            class="input"
-            type="text"
-            placeholder="Your Voucher Number"
-            name="Voucher_Number"
-          />
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">Description</label>
-        <div class="control">
-          <input
-            class="input"
-            type="text"
-            placeholder="Description of Amount"
-            name="Description"
-          />
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">Bank</label>
-        <div class="control">
-          <input
-            class="input"
-            type="number"
-            placeholder="Received in Bank"
-            name="Bank"
-          />
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">Cash</label>
-        <div class="control">
-          <input
-            class="input"
-            type="number"
-            placeholder="Received in Cash"
-            name="Cash"
-          />
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">Remarks</label>
-        <div class="control">
-          <input
-            class="input"
-            type="Remarks"
-            placeholder="Remarks"
-            name="Remarks"
-          />
-        </div>
-      
-        <div class="field is-grouped">
-        <div class="control">
-          <button class="button is-primary" type="submit" id="submit-button">
-            Save
-          </button>
-        </div>
-        <div class="control">
-          <button
-            class="button is-danger"
-            type="button"
-            onclick="document.getElementById('form').reset(); document.getElementById('fileNameDisplay').textContent = 'No file selected';"
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
-    </form>
-    <div
-      id="message"
-      style="
-        display: none;
-        margin: 20px;
-        padding: 10px;
-        border-radius: 4px;
-        font-weight: bold;
-      "
-    ></div>
+    </div>
 
     <script>
-      const form = document.getElementById("form");
-      const submitButton = document.getElementById("submit-button");
-      const messageDiv = document.getElementById("message");
-      const fileInput = document.getElementById("fileInput");
-      const fileNameDisplay = document.getElementById("fileNameDisplay");
+        let currentMode = 'receipt';
 
-      // Update displayed filename on file selection
-      fileInput.addEventListener("change", function () {
-        if (this.files && this.files.length > 0) {
-          fileNameDisplay.textContent = this.files[0].name;
-        } else {
-          fileNameDisplay.textContent = "No file selected";
+        // Initialize form on page load
+        window.addEventListener('load', function() {
+            setTodayDate();
+            generateVoucherNumber();
+            updateFormLabels();
+        });
+
+        // Set today's date
+        function setTodayDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('entryDate').value = today;
         }
-      });
 
-     
-      form.addEventListener("submit", async function (e) {
-        e.preventDefault();
-
-        messageDiv.textContent = "Submitting...";
-        messageDiv.style.display = "block";
-        messageDiv.style.backgroundColor = "beige";
-        messageDiv.style.color = "black";
-        submitButton.disabled = true;
-        submitButton.classList.add("is-loading");
-
-        try {
-          const formData = new FormData(this);
-          const formDataObj = {};
-
-          // Convert FormData to object
-          for (let [key, value] of formData.entries()) {
-            formDataObj[key] = value;
-          }
-
-          // Submit form data
-          const scriptURL =
-            "https://script.google.com/macros/s/AKfycbwRbp3BJ_SZR_KTtSmkQ7SNnpgxYwzpE2jIGnU3XRCl16lHjDjUWMmwr1efWGgknMtc/exec";
-
-          const response = await fetch(scriptURL, {
-            redirect: "follow",
-            method: "POST",
-            body: JSON.stringify(formDataObj),
-            headers: {
-              "Content-Type": "text/plain;charset=utf-8",
-            },
-          });
-
-          const data = await response.json();
-
-          if (data.status === "success") {
-            messageDiv.textContent =
-              data.message || "Data submitted successfully!";
-            messageDiv.style.backgroundColor = "#48c78e";
-            messageDiv.style.color = "white";
-            form.reset();
-            fileNameDisplay.textContent = "No file selected";
-          } else {
-            throw new Error(data.message || "Submission failed");
-          }
-        } catch (error) {
-          console.error("Error:", error);
-          messageDiv.textContent = "Error: " + error.message;
-          messageDiv.style.backgroundColor = "#f14668";
-          messageDiv.style.color = "white";
-        } finally {
-          submitButton.disabled = false;
-          submitButton.classList.remove("is-loading");
-
-          setTimeout(() => {
-            messageDiv.textContent = "";
-            messageDiv.style.display = "none";
-          }, 4000);
+        // Switch between Receipt and Payment tabs
+        function switchTab(mode) {
+            currentMode = mode;
+            
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update form
+            updateFormLabels();
+            generateVoucherNumber();
+            clearForm();
         }
-      });
 
-      // Enhance cancel button to reset file input display
-      const cancelButton = form.querySelector("button.is-danger");
-      cancelButton.addEventListener("click", function () {
-        form.reset();
-        fileNameDisplay.textContent = "No file selected";
-        messageDiv.style.display = "none";
-      });
+        // Update form labels based on mode
+        function updateFormLabels() {
+            const isReceipt = currentMode === 'receipt';
+            
+            document.getElementById('formTitle').textContent = isReceipt ? 'Receipt Entry' : 'Payment Entry';
+            document.getElementById('formSubtitle').textContent = isReceipt ? 'Enter receipt details below' : 'Enter payment details below';
+            
+            document.getElementById('bankLabel').innerHTML = isReceipt ? 
+                '🏦 Deposited in Bank' : '🏦 Paid from Bank';
+            document.getElementById('cashLabel').innerHTML = isReceipt ? 
+                '💵 Received in Cash' : '💵 Paid from Cash';
+        }
+
+        // Generate voucher number
+        function generateVoucherNumber() {
+            const today = new Date();
+            const year = today.getFullYear().toString().slice(-2);
+            const month = (today.getMonth() + 1).toString().padStart(2, '0');
+            const day = today.getDate().toString().padStart(2, '0');
+            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            
+            const prefix = currentMode === 'receipt' ? 'R' : 'P';
+            const voucherNo = `${prefix}${year}${month}${day}${random}`;
+            
+            document.getElementById('voucherNumber').value = voucherNo;
+        }
+
+        // Calculate total amount
+        function calculateTotal() {
+            const bankAmount = parseFloat(document.getElementById('bankAmount').value) || 0;
+            const cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
+            const total = bankAmount + cashAmount;
+            
+            document.getElementById('totalDisplay').textContent = `Total Amount: ₹${total.toFixed(2)}`;
+        }
+
+        // Form submission
+        document.getElementById('dataEntryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate amounts
+            const bankAmount = parseFloat(document.getElementById('bankAmount').value) || 0;
+            const cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
+            
+            if (bankAmount === 0 && cashAmount === 0) {
+                showAlert('Please enter at least one amount (Bank or Cash)!', 'error');
+                return;
+            }
+            
+            // Collect form data
+            const formData = {
+                type: currentMode,
+                date: document.getElementById('entryDate').value,
+                voucherNo: document.getElementById('voucherNumber').value,
+                description: document.getElementById('description').value,
+                bankAmount: bankAmount,
+                cashAmount: cashAmount,
+                totalAmount: bankAmount + cashAmount,
+                remarks: document.getElementById('remarks').value,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Submit data
+            submitData(formData);
+        });
+
+        // Google Apps Script Web App URL - REPLACE WITH YOUR ACTUAL URL
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzWE-uZy_8qpiPP0ldqAzDcoKDYEDXB-9R6ZPFoI8zjGj91SloAiy8e6sNT1_5DPr-D_w/exec';
+        
+        // Submit data to Google Sheets
+        function submitData(data) {
+            // Show loading state
+            document.getElementById('entryForm').classList.add('loading');
+            document.getElementById('submitBtn').textContent = 'Saving...';
+            
+            // Send data to Google Apps Script
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                // Success handling (note: no-cors mode doesn't allow reading response)
+                showAlert(`${data.type.charAt(0).toUpperCase() + data.type.slice(1)} saved successfully! Entry added to Google Sheets.`, 'success');
+                
+                // Generate new voucher number for next entry
+                generateVoucherNumber();
+                
+                // Clear form after delay
+                setTimeout(() => {
+                    clearForm();
+                }, 2000);
+                
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert('Error saving data. Please check your connection and try again.', 'error');
+            })
+            .finally(() => {
+                // Remove loading state
+                document.getElementById('entryForm').classList.remove('loading');
+                document.getElementById('submitBtn').textContent = '💾 Save Entry';
+            });
+        }
+
+        // Print voucher
+        function printVoucher() {
+            // Validate form data
+            if (!document.getElementById('description').value) {
+                showAlert('Please fill in the description before printing!', 'error');
+                return;
+            }
+            
+            const bankAmount = parseFloat(document.getElementById('bankAmount').value) || 0;
+            const cashAmount = parseFloat(document.getElementById('cashAmount').value) || 0;
+            
+            if (bankAmount === 0 && cashAmount === 0) {
+                showAlert('Please enter at least one amount before printing!', 'error');
+                return;
+            }
+            
+            // Populate print template
+            document.getElementById('printVoucherType').textContent = 
+                currentMode === 'receipt' ? 'RECEIPT VOUCHER' : 'PAYMENT VOUCHER';
+            document.getElementById('printDate').textContent = document.getElementById('entryDate').value;
+            document.getElementById('printVoucherNo').textContent = document.getElementById('voucherNumber').value;
+            document.getElementById('printDescription').textContent = document.getElementById('description').value;
+            document.getElementById('printBankAmount').textContent = bankAmount.toFixed(2);
+            document.getElementById('printCashAmount').textContent = cashAmount.toFixed(2);
+            document.getElementById('printTotalAmount').textContent = (bankAmount + cashAmount).toFixed(2);
+            document.getElementById('printRemarks').textContent = document.getElementById('remarks').value || 'N/A';
+            
+            // Show print content and trigger print
+            document.getElementById('printContent').style.display = 'block';
+            window.print();
+            document.getElementById('printContent').style.display = 'none';
+        }
+
+        // Clear form
+        function clearForm() {
+            document.getElementById('dataEntryForm').reset();
+            setTodayDate();
+            document.getElementById('totalDisplay').textContent = 'Total Amount: ₹0.00';
+            hideAlert();
+        }
+
+        // Show alert message
+        function showAlert(message, type) {
+            const alertDiv = document.getElementById('alertMessage');
+            alertDiv.textContent = message;
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.style.display = 'block';
+            
+            // Auto-hide success messages
+            if (type === 'success') {
+                setTimeout(() => {
+                    hideAlert();
+                }, 5000);
+            }
+        }
+
+        // Hide alert message
+        function hideAlert() {
+            const alertDiv = document.getElementById('alertMessage');
+            alertDiv.style.display = 'none';
+        }
+
+        // Auto-save functionality removed since URL is hardcoded
+        // The Google Apps Script URL is configured at the top of this script
     </script>
-  </body>
+</body>
 </html>

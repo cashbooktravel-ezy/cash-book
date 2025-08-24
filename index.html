@@ -18,7 +18,22 @@
     button:hover { background: #125ea3; }
     .success { color: green; text-align: center; margin-top: 10px; }
     .error { color: red; text-align: center; margin-top: 10px; }
-    .loading { color: orange; text-align: center; margin-top: 10px; font-weight: bold; }
+    .loading { color: orange; text-align: center; margin-top: 10px; font-weight: bold; display: flex; justify-content: center; align-items: center; gap: 8px; }
+    
+    /* Spinner animation */
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid orange;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     table { border-collapse: collapse; width: 100%; margin: 20px 0; background: white; box-shadow: 0px 4px 8px rgba(0,0,0,0.1); }
     th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
     th { background: #1976d2; color: white; }
@@ -148,17 +163,16 @@
         });
     }
 
-    // Show progress message
-    function showProgress(msgElement, message, type="loading") {
-      msgElement.textContent = message;
-      msgElement.className = type;
+    // Show progress message with spinner
+    function showProgress(msgElement, message) {
+      msgElement.innerHTML = `<div class="loading"><div class="spinner"></div>${message}</div>`;
     }
 
     // Handle Receipt Form
     document.getElementById("receiptForm").addEventListener("submit", e => {
       e.preventDefault();
       let msgEl = document.getElementById("receiptMsg");
-      showProgress(msgEl, "Saving receipt...", "loading");
+      showProgress(msgEl, "Saving receipt...");
 
       let formData = Object.fromEntries(new FormData(e.target).entries());
       fetch(scriptURL, {
@@ -183,7 +197,7 @@
     document.getElementById("paymentForm").addEventListener("submit", e => {
       e.preventDefault();
       let msgEl = document.getElementById("paymentMsg");
-      showProgress(msgEl, "Saving payment...", "loading");
+      showProgress(msgEl, "Saving payment...");
 
       let formData = Object.fromEntries(new FormData(e.target).entries());
       fetch(scriptURL, {
@@ -212,6 +226,3 @@
 </html>
 
 
-script.google.com/macros/s/AKfycbw1ugta_cQYGuuIb0cC9YOWOms-S5HCx-lyh61Ax6ZS5KXXcitkDTm13mYaLbR3w0k/exec"; // 🔗 Replace with your Web App URL
-
-    

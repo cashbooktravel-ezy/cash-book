@@ -1,228 +1,258 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cash Book System</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  <style>
-    body { font-family: 'Roboto', sans-serif; margin: 0; padding: 20px; background: #f4f6f9; color: #333; }
-    h1, h2 { text-align: center; margin: 20px 0; }
-    .container { display: flex; justify-content: space-around; flex-wrap: wrap; }
-    .form-box { background: #fff; padding: 20px; margin: 10px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0,0,0,0.1); width: 400px; }
-    .form-box h2 { margin-bottom: 15px; font-size: 20px; text-align: center; color: #444; }
-    .form-group { margin-bottom: 12px; }
-    label { display: block; font-weight: 500; margin-bottom: 5px; }
-    input, textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px; outline: none; }
-    button { width: 100%; padding: 10px; background: #1976d2; border: none; color: white; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px; }
-    button:hover { background: #125ea3; }
-    .success { color: green; text-align: center; margin-top: 10px; }
-    .error { color: red; text-align: center; margin-top: 10px; }
-    .loading { color: orange; text-align: center; margin-top: 10px; font-weight: bold; display: flex; justify-content: center; align-items: center; gap: 8px; }
-    
-    /* Spinner animation */
-    .spinner {
-      border: 3px solid #f3f3f3;
-      border-top: 3px solid orange;
-      border-radius: 50%;
-      width: 16px;
-      height: 16px;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+    <title>Data Entry Form with File Upload</title>
+  </head>
+  <body>
+    <section class="hero is-primary is-bold">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">Data Entry Form</h1>
+        </div>
+      </div>
+    </section>
+    <form id="form" class="container m-4 pl-4">
+      <div class="field">
+        <label class="label">Client Name</label>
+        <div class="control">
+          <input
+            class="input"
+            type="text"
+            placeholder="Your Client Name"
+            name="Client Name"
+          />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Email</label>
+        <div class="control">
+          <input
+            class="input"
+            type="email"
+            placeholder="Your Email"
+            name="Email"
+          />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Password</label>
+        <div class="control">
+          <input
+            class="input"
+            type="password"
+            placeholder="Your Password"
+            name="Password"
+          />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Date of Birth</label>
+        <div class="control">
+          <input
+            class="input"
+            type="date"
+            placeholder="Your Date of Birth"
+            name="DOB"
+          />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Gender</label>
+        <div class="control">
+          <label class="radio">
+            <input type="radio" name="Gender" value="male" /> Male
+          </label>
+          <label class="radio">
+            <input type="radio" name="Gender" value="female" /> Female
+          </label>
+        </div>
+      </div>
 
-    table { border-collapse: collapse; width: 100%; margin: 20px 0; background: white; box-shadow: 0px 4px 8px rgba(0,0,0,0.1); }
-    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
-    th { background: #1976d2; color: white; }
-    b { color: #000; }
-  </style>
-</head>
-<body>
+      <div class="field">
+        <label class="label">Upload Document (Optional)</label>
+        <div class="control">
+          <div class="file has-name is-fullwidth">
+            <label class="file-label">
+              <input
+                class="file-input"
+                type="file"
+                name="theFile"
+                id="fileInput"
+                accept="*/*"
+              />
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label"> Choose a file… </span>
+              </span>
+              <span class="file-name" id="fileNameDisplay">
+                No file selected
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <input type="hidden" name="filename" id="actualFilename" />
 
-  <h1>Cash Book System</h1>
+      <div class="field">
+        <label class="label">Agree to Terms</label>
+        <div class="control">
+          <label class="checkbox">
+            <input type="checkbox" name="Agree To Terms" value="yes" /> I agree
+            to the terms and conditions
+          </label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Additional Information</label>
+        <div class="control">
+          <textarea
+            class="textarea"
+            placeholder="Any additional information"
+            name="Notes"
+          ></textarea>
+        </div>
+      </div>
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-primary" type="submit" id="submit-button">
+            Sign Up
+          </button>
+        </div>
+        <div class="control">
+          <button
+            class="button is-danger"
+            type="button"
+            onclick="document.getElementById('form').reset(); document.getElementById('fileNameDisplay').textContent = 'No file selected';"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+    <div
+      id="message"
+      style="
+        display: none;
+        margin: 20px;
+        padding: 10px;
+        border-radius: 4px;
+        font-weight: bold;
+      "
+    ></div>
 
-  <div class="container">
-    <!-- Receipt Form -->
-    <div class="form-box">
-      <h2>Add Receipt</h2>
-      <form id="receiptForm">
-        <div class="form-group"><label>Date</label><input type="date" name="date" required></div>
-        <div class="form-group"><label>Voucher No</label><input type="text" name="receiptNo" required></div>
-        <div class="form-group"><label>Description</label><input type="text" name="receiptDescription" required></div>
-        <div class="form-group"><label>Bank</label><input type="number" name="receiptBank"></div>
-        <div class="form-group"><label>Cash</label><input type="number" name="receiptCash"></div>
-        <div class="form-group"><label>Remarks</label><textarea name="receiptRemarks"></textarea></div>
-        <button type="submit">Save Receipt</button>
-        <div id="receiptMsg"></div>
-      </form>
-    </div>
+    <script>
+      const form = document.getElementById("form");
+      const submitButton = document.getElementById("submit-button");
+      const messageDiv = document.getElementById("message");
+      const fileInput = document.getElementById("fileInput");
+      const fileNameDisplay = document.getElementById("fileNameDisplay");
 
-    <!-- Payment Form -->
-    <div class="form-box">
-      <h2>Add Payment</h2>
-      <form id="paymentForm">
-        <div class="form-group"><label>Date</label><input type="date" name="date" required></div>
-        <div class="form-group"><label>Voucher No</label><input type="text" name="paymentNo" required></div>
-        <div class="form-group"><label>Description</label><input type="text" name="paymentDescription" required></div>
-        <div class="form-group"><label>Bank</label><input type="number" name="paymentBank"></div>
-        <div class="form-group"><label>Cash</label><input type="number" name="paymentCash"></div>
-        <div class="form-group"><label>Remarks</label><textarea name="paymentRemarks"></textarea></div>
-        <button type="submit">Save Payment</button>
-        <div id="paymentMsg"></div>
-      </form>
-    </div>
-  </div>
+      // Update displayed filename on file selection
+      fileInput.addEventListener("change", function () {
+        if (this.files && this.files.length > 0) {
+          fileNameDisplay.textContent = this.files[0].name;
+        } else {
+          fileNameDisplay.textContent = "No file selected";
+        }
+      });
 
-  <!-- Receipts Table -->
-  <h2>Receipts</h2>
-  <table id="receiptsTable">
-    <thead>
-      <tr><th>Date</th><th>Voucher No</th><th>Description</th><th>Bank</th><th>Cash</th><th>Remarks</th></tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <!-- Payments Table -->
-  <h2>Payments</h2>
-  <table id="paymentsTable">
-    <thead>
-      <tr><th>Date</th><th>Voucher No</th><th>Description</th><th>Bank</th><th>Cash</th><th>Remarks</th></tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <!-- Cash Book with Running Balance -->
-  <h2>Cash Book (With Running Balance)</h2>
-  <table id="cashBookTable">
-    <thead>
-      <tr>
-        <th>Date</th><th>Voucher</th><th>Description</th><th>Type</th>
-        <th>Bank</th><th>Cash</th><th>Remarks</th>
-        <th>Bank Balance</th><th>Cash Balance</th><th>Total Balance</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbw1ugta_cQYGuuIb0cC9YOWOms-S5HCx-lyh61Ax6ZS5KXXcitkDTm13mYaLbR3w0k/exec"; // 🔗 Replace with your Web App URL
-
-    // Load dashboard data
-    function loadDashboard() {
-      fetch(scriptURL)
-        .then(res => res.json())
-        .then(data => {
-          // Receipts
-          let rBody = document.querySelector("#receiptsTable tbody");
-          rBody.innerHTML = "";
-          data.receipts.forEach(r => {
-            rBody.innerHTML += `<tr>
-              <td>${r.Date || ""}</td>
-              <td>${r["Voucher No"] || ""}</td>
-              <td>${r.Description || ""}</td>
-              <td>${r.Bank || ""}</td>
-              <td>${r.Cash || ""}</td>
-              <td>${r.Remarks || ""}</td>
-            </tr>`;
-          });
-
-          // Payments
-          let pBody = document.querySelector("#paymentsTable tbody");
-          pBody.innerHTML = "";
-          data.payments.forEach(p => {
-            pBody.innerHTML += `<tr>
-              <td>${p.Date || ""}</td>
-              <td>${p["Voucher No"] || ""}</td>
-              <td>${p.Description || ""}</td>
-              <td>${p.Bank || ""}</td>
-              <td>${p.Cash || ""}</td>
-              <td>${p.Remarks || ""}</td>
-            </tr>`;
-          });
-
-          // Cash Book with Running Balances
-          let cBody = document.querySelector("#cashBookTable tbody");
-          cBody.innerHTML = "";
-          data.cashbook.forEach(e => {
-            cBody.innerHTML += `<tr>
-              <td>${e.Date || ""}</td>
-              <td>${e.Voucher || ""}</td>
-              <td>${e.Description || ""}</td>
-              <td>${e.Type}</td>
-              <td>${e.Bank}</td>
-              <td>${e.Cash}</td>
-              <td>${e.Remarks || ""}</td>
-              <td>${e.BankBalance}</td>
-              <td>${e.CashBalance}</td>
-              <td><b>${e.TotalBalance}</b></td>
-            </tr>`;
-          });
+      // Function to handle file upload
+      async function uploadFile(file) {
+        return new Promise((resolve, reject) => {
+          const fr = new FileReader();
+          fr.onload = (e) => {
+            const data = e.target.result.split(",");
+            const obj = {
+              fileName: file.name,
+              mimeType: data[0].match(/:(\w.+);/)[1],
+              data: data[1],
+            };
+            resolve(obj);
+          };
+          fr.onerror = reject;
+          fr.readAsDataURL(file);
         });
-    }
+      }
 
-    // Show progress message with spinner
-    function showProgress(msgElement, message) {
-      msgElement.innerHTML = `<div class="loading"><div class="spinner"></div>${message}</div>`;
-    }
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
 
-    // Handle Receipt Form
-    document.getElementById("receiptForm").addEventListener("submit", e => {
-      e.preventDefault();
-      let msgEl = document.getElementById("receiptMsg");
-      showProgress(msgEl, "Saving receipt...");
+        messageDiv.textContent = "Submitting...";
+        messageDiv.style.display = "block";
+        messageDiv.style.backgroundColor = "beige";
+        messageDiv.style.color = "black";
+        submitButton.disabled = true;
+        submitButton.classList.add("is-loading");
 
-      let formData = Object.fromEntries(new FormData(e.target).entries());
-      fetch(scriptURL, {
-        method: "POST",
-        body: JSON.stringify(formData),
-        headers: { "Content-Type": "application/json" }
-      })
-      .then(res => res.json())
-      .then(data => {
-        msgEl.textContent = data.message;
-        msgEl.className = data.status;
-        e.target.reset();
-        loadDashboard();
-      })
-      .catch(err => {
-        msgEl.textContent = "Error: " + err;
-        msgEl.className = "error";
+        try {
+          const formData = new FormData(this);
+          const formDataObj = {};
+
+          // Convert FormData to object
+          for (let [key, value] of formData.entries()) {
+            formDataObj[key] = value;
+          }
+
+          // Handle file upload if a file is selected
+          if (fileInput.files.length > 0) {
+            const fileObj = await uploadFile(fileInput.files[0]);
+            formDataObj.fileData = fileObj; // Add file data to form data
+          }
+
+          // Submit form data
+          const scriptURL =
+            "https://script.google.com/macros/s/AKfycbwRbp3BJ_SZR_KTtSmkQ7SNnpgxYwzpE2jIGnU3XRCl16lHjDjUWMmwr1efWGgknMtc/exec";
+
+          const response = await fetch(scriptURL, {
+            redirect: "follow",
+            method: "POST",
+            body: JSON.stringify(formDataObj),
+            headers: {
+              "Content-Type": "text/plain;charset=utf-8",
+            },
+          });
+
+          const data = await response.json();
+
+          if (data.status === "success") {
+            messageDiv.textContent =
+              data.message || "Data submitted successfully!";
+            messageDiv.style.backgroundColor = "#48c78e";
+            messageDiv.style.color = "white";
+            form.reset();
+            fileNameDisplay.textContent = "No file selected";
+          } else {
+            throw new Error(data.message || "Submission failed");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          messageDiv.textContent = "Error: " + error.message;
+          messageDiv.style.backgroundColor = "#f14668";
+          messageDiv.style.color = "white";
+        } finally {
+          submitButton.disabled = false;
+          submitButton.classList.remove("is-loading");
+
+          setTimeout(() => {
+            messageDiv.textContent = "";
+            messageDiv.style.display = "none";
+          }, 4000);
+        }
       });
-    });
 
-    // Handle Payment Form
-    document.getElementById("paymentForm").addEventListener("submit", e => {
-      e.preventDefault();
-      let msgEl = document.getElementById("paymentMsg");
-      showProgress(msgEl, "Saving payment...");
-
-      let formData = Object.fromEntries(new FormData(e.target).entries());
-      fetch(scriptURL, {
-        method: "POST",
-        body: JSON.stringify(formData),
-        headers: { "Content-Type": "application/json" }
-      })
-      .then(res => res.json())
-      .then(data => {
-        msgEl.textContent = data.message;
-        msgEl.className = data.status;
-        e.target.reset();
-        loadDashboard();
-      })
-      .catch(err => {
-        msgEl.textContent = "Error: " + err;
-        msgEl.className = "error";
+      // Enhance cancel button to reset file input display
+      const cancelButton = form.querySelector("button.is-danger");
+      cancelButton.addEventListener("click", function () {
+        form.reset();
+        fileNameDisplay.textContent = "No file selected";
+        messageDiv.style.display = "none";
       });
-    });
-
-    // Initial load
-    loadDashboard();
-  </script>
-
-</body>
+    </script>
+  </body>
 </html>
-
-

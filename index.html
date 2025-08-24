@@ -18,6 +18,7 @@
     button:hover { background: #125ea3; }
     .success { color: green; text-align: center; margin-top: 10px; }
     .error { color: red; text-align: center; margin-top: 10px; }
+    .loading { color: orange; text-align: center; margin-top: 10px; font-weight: bold; }
     table { border-collapse: collapse; width: 100%; margin: 20px 0; background: white; box-shadow: 0px 4px 8px rgba(0,0,0,0.1); }
     th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
     th { background: #1976d2; color: white; }
@@ -147,9 +148,18 @@
         });
     }
 
+    // Show progress message
+    function showProgress(msgElement, message, type="loading") {
+      msgElement.textContent = message;
+      msgElement.className = type;
+    }
+
     // Handle Receipt Form
     document.getElementById("receiptForm").addEventListener("submit", e => {
       e.preventDefault();
+      let msgEl = document.getElementById("receiptMsg");
+      showProgress(msgEl, "Saving receipt...", "loading");
+
       let formData = Object.fromEntries(new FormData(e.target).entries());
       fetch(scriptURL, {
         method: "POST",
@@ -158,16 +168,23 @@
       })
       .then(res => res.json())
       .then(data => {
-        document.getElementById("receiptMsg").textContent = data.message;
-        document.getElementById("receiptMsg").className = data.status;
+        msgEl.textContent = data.message;
+        msgEl.className = data.status;
         e.target.reset();
         loadDashboard();
+      })
+      .catch(err => {
+        msgEl.textContent = "Error: " + err;
+        msgEl.className = "error";
       });
     });
 
     // Handle Payment Form
     document.getElementById("paymentForm").addEventListener("submit", e => {
       e.preventDefault();
+      let msgEl = document.getElementById("paymentMsg");
+      showProgress(msgEl, "Saving payment...", "loading");
+
       let formData = Object.fromEntries(new FormData(e.target).entries());
       fetch(scriptURL, {
         method: "POST",
@@ -176,10 +193,14 @@
       })
       .then(res => res.json())
       .then(data => {
-        document.getElementById("paymentMsg").textContent = data.message;
-        document.getElementById("paymentMsg").className = data.status;
+        msgEl.textContent = data.message;
+        msgEl.className = data.status;
         e.target.reset();
         loadDashboard();
+      })
+      .catch(err => {
+        msgEl.textContent = "Error: " + err;
+        msgEl.className = "error";
       });
     });
 
@@ -189,3 +210,8 @@
 
 </body>
 </html>
+
+
+script.google.com/macros/s/AKfycbw1ugta_cQYGuuIb0cC9YOWOms-S5HCx-lyh61Ax6ZS5KXXcitkDTm13mYaLbR3w0k/exec"; // 🔗 Replace with your Web App URL
+
+    
